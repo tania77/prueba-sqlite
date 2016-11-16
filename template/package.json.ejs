@@ -1,0 +1,49 @@
+{
+  "name": "<%= autor.name %>",
+  "email": "<%= autor.email %>",
+  "version": "0.0.1",
+  "description": "Gitbook Start",
+  "main": "index.js",
+  "scripts": {
+    "generate-gitbook": "node ./scripts/generate-gitbook",
+    "generate-wiki": "./scripts/losh generate-wiki",
+    "build": "npm install && npm i gitbook-cli && npm run generate-gitbook",
+    "deploy-gitbook": "node ./scripts/deploy-gitbook",
+    "deploy-wiki": "./scripts/losh deploy-wiki",
+    "deploy": "npm run build && npm run deploy-gitbook",
+    "version": "./scripts/losh version",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<%= autor.github %>/<%= autor.repourl %>.git"
+  },
+  "keywords": [
+    "gitbook",
+    "start",
+    "ericlucastania"
+  ],
+  "iaas": {
+    "user": "usuario",
+    "ip": "10.6.128.121",
+    "command": "cd /home/usuario/prueba/gitbook-start-iaas-ull-es-ericlucastania;git pull origin master"
+  },
+  "author": "<%= autor.name %>",
+  "license": "MIT",
+  "devDependencies": {
+  },
+  "dependencies": {
+    "async": "^1.4.0",
+    "ejs": "^2.5.2",
+    "fs-extra": "^0.22.1",
+    "gh-pages": "^0.3.1",
+    "git-config": "^0.0.7",
+    "gitbook-cli": "^2.3.0",
+    "express-ejs-layouts": "^2.2.0",
+    "express": "^4.14.0",
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.5.2",
+    "minimist": "^1.2.0",
+    "shelljs": "^0.7.5"
+  }
+}

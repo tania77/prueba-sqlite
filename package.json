@@ -1,0 +1,63 @@
+{
+  "name": "gitbook-start-elt",
+  "version": "0.5.2",
+  "description": "Repo to start gitbook proyect",
+  "main": "index.js",
+  "scripts": {
+    "generate-gitbook": "node ./scripts/generate-gitbook",
+    "generate-wiki": "./scripts/losh generate-wiki",
+    "build": "npm install && npm i gitbook-cli && npm run generate-gitbook",
+    "deploy-gitbook": "node ./scripts/deploy-gitbook",
+    "deploy-wiki": "./scripts/losh deploy-wiki",
+    "deploy": "npm run build && npm run deploy-gitbook",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ULL-ESIT-SYTW-1617/crear-repositorio-en-github-ericlucastania-1.git"
+  },
+  "keywords": [
+    "gitbook",
+    "start",
+    "ericlucastania"
+  ],
+  "bin": {
+    "gitbook-start": "./bin/gitbook-start.js"
+  },
+  "author": {
+    "name": "Eric Ramos, Lucas Ruiz, Tania Gonzalez"
+  },
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "ejs": "^2.5.2",
+    "fs-extra": "^1.0.0",
+    "gh-pages": "^0.11.0",
+    "git-config": "0.0.7",
+    "gulp": "^3.9.1",
+    "gulp-shell": "^0.5.2",
+    "jsonfile": "^2.4.0",
+    "minimist": "^1.2.0",
+    "octonode": "^0.7.6",
+    "readline-sync": "^1.4.5",
+    "shelljs": "^0.7.5"
+  },
+  "bugs": {
+    "url": "https://github.com/ULL-ESIT-SYTW-1617/crear-repositorio-en-github-ericlucastania-1/issues"
+  },
+  "homepage": "https://github.com/ULL-ESIT-SYTW-1617/crear-repositorio-en-github-ericlucastania-1#readme",
+  "maintainers": [
+    {
+      "name": "alu0100786330",
+      "email": "alu0100786330@ull.edu.es"
+    },
+    {
+      "name": "joselucas",
+      "email": "alu0100785265@ull.edu.es"
+    },
+    {
+      "name": "tania77",
+      "email": "ainatrg@gmail.com"
+    }
+  ]
+}

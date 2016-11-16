@@ -1,49 +1,18 @@
-var gulp = require('gulp');
+//GULP
+
+var gulp  = require('gulp');
 var shell = require('gulp-shell');
  
- 
-var paths = {
-  
-   scripts: [
-     './scripts.js/**'
-   ],
-   
-   
-   html: [
-   './gh-pages/index.html'
-   ],
-   
-   book: [
-   './txt/*.md'
-   ],
-   
-   bookjson: [
-   './book.json'
-   ]
-   
-};
-
-gulp.task('deploy',shell.task([
-  'npm run deploy'
-]));
-
 
 gulp.task('build',shell.task([
-  'npm run build'
+  'npm run generate-gitbook'
 ]));
 
-
-gulp.task('all',shell.task([
-  './scripts/losh generate-gitbook && generate-wiki && deploy-gitbook && deploy-wiki'
-]));
-
-
-gulp.task('inst',shell.task([
-  'gitbook install'
-]));
-
-gulp.task('watch', function(){
-   gulp.watch(paths.book,['deploy']);
-   gulp.watch(paths.bookjson,['inst']);
-  
+gulp.task('default', function(){
+    gulp.watch(['txt/*.md', 'scripts/**',  'book.json'], ['build']); 
 });
+
+gulp.task('deploy-heroku',['build'],function(){
+  var heroku = require ("gitbook-start-plugin-heroku-ericlucastania");
+  heroku.deploy();
+});//finish deploy-heroku

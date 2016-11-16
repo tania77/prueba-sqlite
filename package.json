@@ -1,7 +1,8 @@
 {
-  "name": "gitbook-start-elt",
-  "version": "0.5.2",
-  "description": "Repo to start gitbook proyect",
+  "name": "eric",
+  "email": "alu0100786330@ull.edu.es",
+  "version": "0.0.1",
+  "description": "Gitbook Start",
   "main": "index.js",
   "scripts": {
     "generate-gitbook": "node ./scripts/generate-gitbook",
@@ -10,54 +11,47 @@
     "deploy-gitbook": "node ./scripts/deploy-gitbook",
     "deploy-wiki": "./scripts/losh deploy-wiki",
     "deploy": "npm run build && npm run deploy-gitbook",
+    "version": "./scripts/losh version",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ULL-ESIT-SYTW-1617/crear-repositorio-en-github-ericlucastania-1.git"
+    "url": "git@github.com:alu0100786330/pepe.git"
   },
   "keywords": [
     "gitbook",
     "start",
     "ericlucastania"
   ],
-  "bin": {
-    "gitbook-start": "./bin/gitbook-start.js"
+  "iaas": {
+    "user": "usuario",
+    "ip": "10.6.128.121",
+    "command": "cd /home/usuario/prueba/gitbook-start-iaas-ull-es-ericlucastania;git pull origin master"
   },
-  "author": {
-    "name": "Eric Ramos, Lucas Ruiz, Tania Gonzalez"
-  },
+  "author": "eric",
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
+    "async": "^1.4.0",
+    "body-parser": "^1.15.2",
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.4.3",
     "ejs": "^2.5.2",
-    "fs-extra": "^1.0.0",
-    "gh-pages": "^0.11.0",
-    "git-config": "0.0.7",
+    "express": "^4.14.0",
+    "express-ejs-layouts": "^2.2.0",
+    "express-session": "^1.14.2",
+    "fs-extra": "^0.22.1",
+    "gh-pages": "^0.3.1",
+    "git-config": "^0.0.7",
+    "gitbook-cli": "^2.3.0",
+    "gitbook-start-plugin-heroku-ericlucastania": "^1.0.35",
     "gulp": "^3.9.1",
     "gulp-shell": "^0.5.2",
-    "jsonfile": "^2.4.0",
     "minimist": "^1.2.0",
+    "morgan": "^1.7.0",
     "octonode": "^0.7.6",
-    "readline-sync": "^1.4.5",
+    "passport": "^0.3.2",
+    "passport-github": "^1.1.0",
     "shelljs": "^0.7.5"
-  },
-  "bugs": {
-    "url": "https://github.com/ULL-ESIT-SYTW-1617/crear-repositorio-en-github-ericlucastania-1/issues"
-  },
-  "homepage": "https://github.com/ULL-ESIT-SYTW-1617/crear-repositorio-en-github-ericlucastania-1#readme",
-  "maintainers": [
-    {
-      "name": "alu0100786330",
-      "email": "alu0100786330@ull.edu.es"
-    },
-    {
-      "name": "joselucas",
-      "email": "alu0100785265@ull.edu.es"
-    },
-    {
-      "name": "tania77",
-      "email": "ainatrg@gmail.com"
-    }
-  ]
+  }
 }

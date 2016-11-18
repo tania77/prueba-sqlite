@@ -1,35 +1,21 @@
-'use strict';
 var inquirer = require('inquirer');
+var credential = require('credential'),
+  pw = credential(),
+  pass = 'chuchu';
 
-var questions = [
-  {
-    type: 'input',
-    name: 'first_name',
-    message: 'What\'s your first name'
-  },
-  {
-    type: 'input',
-    name: 'last_name',
-    message: 'What\'s your last name',
-    default: function () {
-      return 'Doe';
-    }
-  },
-  {
-    type: 'input',
-    name: 'phone',
-    message: 'What\'s your phone number',
-    validate: function (value) {
-      var pass = value.match(/^\d+$/i);
-      if (pass) {
-        return true;
-      }
-
-      return 'Please enter a valid phone number';
-    }
-  }
-];
-
-inquirer.prompt(questions).then(function (answers) {
-  console.log(JSON.stringify(answers, null, '  '));
+pw.hash(pass, function (err, hash) {
+  if (err) { throw err; }
+  console.log('Store the password hash:\n', hash);
+  var questions = [{ message: "Enter your password", type: 'password', name: 'password'}];
+  inquirer.prompt(questions).then(function (userInput) {
+    console.log(userInput);
+    var userPass = userInput.password;
+    console.log(userPass);
+    pw.verify(hash, userPass, function (err, isValid) {
+      var msg;
+      if (err) { throw err; }
+      msg = isValid ? 'Passwords match!' : 'Wrong password.';
+      console.log(msg);
+    });
+  });
 });

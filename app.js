@@ -1,7 +1,7 @@
 "use strict";
 
 
-var node_dropbox = require('node-dropbox');
+var node_dropbox = require('node-dropbox-copia');
 var api = node_dropbox.api('CMj9o-pbqicAAAAAAAABZoL6zFcWKDe28fppU-u0YY4jPp2ZnIOWxgEAOq-hDuyz');
 
 var express = require('express');
@@ -13,11 +13,12 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var Strategy = require('passport-github').Strategy;
 var boolGithub = false;
+var boolLocal = false;
 
 passport.use(new Strategy({
   clientID: '217bf6cd072238e4f2d1',
   clientSecret: '3aac244b495a7fda4e113c46d8db90eeec137201',
-  callbackURL: 'https://prueba-alu0100786330.c9users.io/login/github/return'
+  callbackURL: 'https://practicapermisolibro/login/github/return'
 }, function (accessToken, refreshToken, profile, cb) {
   var token = require('./token.json');
   var github = require('octonode');
@@ -44,7 +45,8 @@ function buscarNombre(usuario, password, cb) {
 
   funcion().then(res => {
     if (datos[usuario].username == usuario && bcrypt.compareSync(password, datos[usuario].pass)) {
-      
+      boolLocal = true;
+      console.log(boolLocal + "aquiiiii");
       cb(null, datos[usuario]);
     }
     else {
@@ -124,7 +126,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/book', function (req, res) {
-  if (req.user && boolGithub)
+  if (req.user && (boolGithub || boolLocal))
     res.sendfile('gh-pages/juanito.html');
   else if (req.user)
     res.render('error');
@@ -203,6 +205,8 @@ app.post('/guardar', function (req, res) {
       });
     });
   };
+  
+  
 
   funcion().then(res => {
     x[req.body.UserName] = obj[req.body.UserName];

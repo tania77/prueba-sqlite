@@ -1,12 +1,8 @@
 "use strict";
 
 
-var node_dropbox = require('node-dropbox-copia');
-var api = node_dropbox.api('CMj9o-pbqicAAAAAAAABZoL6zFcWKDe28fppU-u0YY4jPp2ZnIOWxgEAOq-hDuyz');
-
 var express = require('express');
 var app = express();
-var fs = require("fs");
 var bcrypt = require("bcrypt-nodejs");
 var path = require('path');
 var passport = require('passport');
@@ -14,6 +10,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var Strategy = require('passport-github').Strategy;
 var boolGithub = false;
 var boolLocal = false;
+
 
 passport.use(new Strategy({
   clientID: '217bf6cd072238e4f2d1',
@@ -32,29 +29,24 @@ passport.use(new Strategy({
   return cb(null, profile);
 }));
 
-function buscarNombre(usuario, password, cb) {
-  var datos;
-  
-  var funcion = function () {
-    return new Promise((res, rej) => {
-      api.getFile('/datos.json', function (e, data, body) {
-        res(datos = body);
-      });
-    });
-  };
 
-  funcion().then(res => {
-    if (datos[usuario].username == usuario && bcrypt.compareSync(password, datos[usuario].pass)) {
-      boolLocal = true;
-      console.log(boolLocal + "aquiiiii");
-      cb(null, datos[usuario]);
-    }
-    else {
+function buscarNombre(usuario, password, cb) {
+  db.each("SELECT * FROM users", function (err, rows) {
+    if (err) {
       cb(null);
     }
+    else {
+      if (rows.username == usuario && bcrypt.compareSync(password, rows.pass)) {
+        boolLocal = true;
+        cb(null, rows);
+      }
+    }
   });
-
+  if(!boolLocal){
+    cb(null);
+  }
 }
+
 
 
 
@@ -73,6 +65,14 @@ passport.use(new LocalStrategy({
     });
   }
 ));
+
+
+var sqlite3 = require('sqlite3').verbose(),
+  db = new sqlite3.Database('baseDatos');
+
+db.serialize(function () {
+  db.run('CREATE TABLE IF NOT EXISTS users (username TEXT, pass TEXT)');
+});
 
 
 // logging, parsing, and session handling.
@@ -95,8 +95,6 @@ passport.serializeUser(function (user, cb) {
 passport.deserializeUser(function (obj, cb) {
   cb(null, obj);
 });
-
-
 
 
 app.use(passport.initialize());
@@ -176,6 +174,11 @@ app.post('/auth', passport.authenticate('local', {
   res.redirect("/");
 });
 
+
+
+
+
+
 app.get('/profile', require('connect-ensure-login').ensureLoggedIn(), function (req, res, next) {
   res.render('profile', {
     user: req.user
@@ -184,42 +187,22 @@ app.get('/profile', require('connect-ensure-login').ensureLoggedIn(), function (
 
 app.post('/guardar', function (req, res) {
   if (req.body.Password == req.body.Password2) {
-
-    var obj = {
-      [req.body.UserName]: {
-        "username": req.body.UserName,
-        "pass": bcrypt.hashSync(req.body.Password)
+    var stmt = db.prepare('INSERT INTO users (username, pass) VALUES (?, ?)');
+    stmt.run(req.body.UserName, bcrypt.hashSync(req.body.Password));
+    stmt.finalize();
+    db.all("SELECT * FROM users", function (err, rows) {
+      if (err) {
+        throw err;
       }
-    };
+      else {
+        console.log(rows);
+      }
+    });
   }
+
   else {
     res.render('registro');
-
-
   }
-  var x;
-  var funcion = function () {
-    return new Promise((res, rej) => {
-      api.getFile('/datos.json', function (e, data, body) {
-        res(x = body);
-      });
-    });
-  };
-  
-  
-
-  funcion().then(res => {
-    x[req.body.UserName] = obj[req.body.UserName];
-    
-    new Promise((res, rej) => {
-      res(api.createFile('/datos.json', x, function (e, b, c) {
-        if (e) console.log(e);
-      }));
-    });
-
-  });
-
-  
   res.redirect('/');
 });
 

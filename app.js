@@ -31,20 +31,24 @@ passport.use(new Strategy({
 
 
 function buscarNombre(usuario, password, cb) {
+
   db.each("SELECT * FROM users", function (err, rows) {
-    if (err) {
-      cb(null);
-    }
-    else {
-      if (rows.username == usuario && bcrypt.compareSync(password, rows.pass)) {
-        boolLocal = true;
-        cb(null, rows);
+    return new Promise((res, rej) => {
+
+      if (err) {
+        res(cb(null));
       }
-    }
+      else {
+        if (rows.username == usuario && bcrypt.compareSync(password, rows.pass)) {
+          boolLocal = true;
+          res(cb(null, rows));
+        }
+      }
+      if (!boolLocal) {
+        res(cb(null));
+      }
+    });
   });
-  if(!boolLocal){
-    cb(null);
-  }
 }
 
 
@@ -153,9 +157,11 @@ app.get('/registro', function (req, res) {
 
 app.get('/login', function (req, res) {
 
-  app.get('/profile', function (req, res) {
-    res.render('home');
-  });
+  if (req.user) {
+    app.get('/profile', function (req, res) {
+      res.render('home');
+    });
+  }
 
   res.render('login');
 });

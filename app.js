@@ -71,6 +71,13 @@ passport.use(new LocalStrategy({
 ));
 
 
+
+
+
+
+
+
+
 var sqlite3 = require('sqlite3').verbose(),
   db = new sqlite3.Database('baseDatos');
 
